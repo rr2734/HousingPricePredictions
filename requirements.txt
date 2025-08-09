@@ -1,3 +1,4 @@
+pip install --upgrade pip
 pip install streamlit matplotlib seaborn numpy pandas statsmodels scikit-learn
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -12,3 +13,4 @@ from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.metrics import accuracy_score
 
 import pickle
+
