@@ -1,8 +1,20 @@
 import streamlit as st
-import pandas as pd
 import pickle
 import io
 import json
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import os
+import statsmodels.api as sm
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+import pickle
+from sklearn.preprocessing import StandardScaler
+from sklearn import tree
+from sklearn.tree import DecisionTreeRegressor 
 
 # --- Load your saved models ---
 with open('multilinear_regression_model.pkl', 'rb') as f:
@@ -125,6 +137,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
