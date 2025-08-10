@@ -115,7 +115,7 @@ if uploaded_file is not None:
         # --- Download option ---
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        results_df.to_excel(writer, index=False)
+            results_df.to_excel(writer, index=False)
         st.download_button(
         label="Download Predictions as Excel",
         data=output.getvalue(),
@@ -125,6 +125,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
