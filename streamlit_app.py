@@ -93,7 +93,7 @@ if uploaded_file is not None:
 
         for col in train_features:
             if col not in test_final.columns:
-            test_final[col] = 0
+                test_final[col] = 0
 
         test_final= test_final[train_features]
 
@@ -125,6 +125,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
