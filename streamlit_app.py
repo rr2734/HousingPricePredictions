@@ -123,11 +123,12 @@ if uploaded_file is not None:
         
         # --- Show results ---
         results_df = test_final.copy()
+        results_df['Id'] = id_col
         results_df['Linear_Regression_Pred'] = linear_preds
         results_df['Decision_Tree_Pred'] = tree_preds
 
         st.subheader("Predictions")
-        st.dataframe(id_col,results_df)
+        st.dataframe(results_df)
 
         # --- Download option ---
         output = io.BytesIO()
@@ -142,6 +143,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
