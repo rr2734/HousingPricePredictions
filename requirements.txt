@@ -6,6 +6,7 @@ pandas
 statsmodels
 scikit-learn
 streamlit
+xlsxwriter
 
 
 
