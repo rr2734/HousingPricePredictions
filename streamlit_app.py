@@ -7,6 +7,8 @@
 #from sklearn.model_selection import train_test_split
 #from sklearn.linear_model import LinearRegression
 #from sklearn.metrics import r2_score
+#import pickle
+
 result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')
 
 result= result.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'])
@@ -44,7 +46,7 @@ Y_pred = result_classifier.predict(X_test)
 X.columns.tolist()
 #Too many features to create figure
 accuracy = accuracy_score(Y_test, Y_pred) #
-import pickle
+
 
     # Save the multilinear regression model
 with open('multilinear_regression_model.pkl', 'wb') as f:
@@ -59,3 +61,4 @@ with open('multilinear_regression_model.pkl', 'rb') as f:
 with open('decision_tree_classifier.pkl', 'rb') as f1:
 
     loaded_DT = pickle.load(f1)
+
