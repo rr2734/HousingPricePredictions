@@ -53,8 +53,9 @@ with open('multilinear_regression_model.pkl', 'wb') as f:
     # Save the decision tree classifier model
 with open('decision_tree_classifier.pkl', 'wb') as f1:
     pickle.dump(result_classifier, f1)
-    with open('multilinear_regression_model.pkl', 'rb') as f:
+with open('multilinear_regression_model.pkl', 'rb') as f:
     loaded_RM = pickle.load(f)
 
 with open('decision_tree_classifier.pkl', 'rb') as f1:
+
     loaded_DT = pickle.load(f1)
