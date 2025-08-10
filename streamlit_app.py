@@ -73,9 +73,8 @@ if uploaded_file is not None:
         else:
             st.success("File loaded successfully!")
 
-
-with open('train_features.json') as f:
-    train_features = json.load(f)
+        with open('train_features.json') as f:
+            train_features = json.load(f)
 
 test_data= df.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'])
 numeric_cols=df.select_dtypes(include=['int64','float64']).columns.tolist()
@@ -126,6 +125,7 @@ st.download_button(
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
