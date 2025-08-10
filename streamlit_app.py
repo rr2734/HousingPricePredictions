@@ -90,6 +90,7 @@ if uploaded_file is not None:
             train_features = json.load(f)
 
         test_data= df.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'], errors = 'ignore')
+        id_col = test_data['Id']
         numeric_cols = [col for col in test_data.select_dtypes(include=['int64', 'float64']).columns if col not in ['SalePrice', 'Id']]
         object_cols = test_data.select_dtypes(include='object').columns.tolist()
         test_encoded=pd.get_dummies(test_data,columns =object_cols, drop_first =True)
@@ -141,6 +142,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
