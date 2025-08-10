@@ -100,7 +100,8 @@ if uploaded_file is not None:
                                          columns=numerical_features.columns, 
                                          index=numerical_features.index)
         test_final = pd.concat([scaled_numerical_features, categorical_features], axis=1)
-        test_final1=pd.concat([scaled_numerical_features, categorical_features,result['SalePrice']], axis=1)
+        test_final.drop('SalePrice')
+        #test_final1=pd.concat([scaled_numerical_features, categorical_features,result['SalePrice']], axis=1)
         test_final=test_final.dropna(axis=0)
 
         for col in train_features:
@@ -137,6 +138,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
