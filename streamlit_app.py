@@ -63,7 +63,7 @@ if uploaded_file is not None:
 
         # --- Validate columns ---
         missing_numeric = [col for col in numeric_cols if col not in df.columns]
-        missing_categorical = [col for col in categorical_cols if col not in df.columns]
+        missing_categorical = [col for col in object_cols if col not in df.columns]
 
         if missing_numeric or missing_categorical:
             st.error(f"Missing required columns: {missing_numeric + missing_categorical}")
@@ -93,4 +93,5 @@ if uploaded_file is not None:
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
     except Exception as e:
+
         st.error(f"Error reading file: {e}")
