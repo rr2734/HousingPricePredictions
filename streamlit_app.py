@@ -95,7 +95,7 @@ if uploaded_file is not None:
         test_encoded=pd.get_dummies(test_data,columns =object_cols, drop_first =True)
         id_col = test_data['Id']
         numerical_features = test_encoded[numeric_cols]
-        categorical_features = test_encoded.drop(columns=numeric_cols1)
+        categorical_features = test_encoded.drop(columns=numeric_cols)
         scaled_numerical_features = pd.DataFrame(scaler.fit_transform(numerical_features), 
                                          columns=numerical_features.columns, 
                                          index=numerical_features.index)
@@ -140,6 +140,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
