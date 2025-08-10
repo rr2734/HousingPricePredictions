@@ -53,7 +53,7 @@ result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/head
 numeric_cols=result.select_dtypes(include=['int64', 'float64']).columns.tolist()
 numeric_cols.remove('SalePrice')
 object_cols = result.select_dtypes(include='object').columns.tolist()
-#result_encoded=pd.get_dummies(result,columns =object_cols, drop_first =True)
+
 
 
 
@@ -79,7 +79,7 @@ if uploaded_file is not None:
         test_data= df.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'])
         numeric_cols=df.select_dtypes(include=['int64','float64']).columns.tolist()
         object_cols = df.select_dtypes(include='object').columns.tolist()
-        test_encoded=df.get_dummies(result,columns =object_cols, drop_first =True)
+        test_encoded=df.get_dummies(test_data,columns =object_cols, drop_first =True)
         numeric_cols.pop()
         numerical_features = test_encoded[numeric_cols]
         categorical_features = test_encoded.drop(columns=numeric_cols)
@@ -125,6 +125,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
