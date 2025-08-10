@@ -16,6 +16,7 @@ train_data = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/
 # Identify numeric and categorical columns
 numeric_cols1 = train_data.select_dtypes(include=['int64', 'float64']).columns.tolist()
 categorical_cols1 = train_data.select_dtypes(exclude=['int64', 'float64']).columns.tolist()
+numeric_cols1=numeric_cols1.drop('SalePrice, axis=1)
 
 # Compute ranges for numeric columns
 numeric_ranges = {col: (train_data[col].min(), train_data[col].max()) for col in numeric_cols1}
@@ -49,6 +50,7 @@ with st.expander("📋 View required column ranges and categories"):
 
 result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')
 numeric_cols=result.select_dtypes(include=['int64', 'float64']).columns.tolist()
+numeric_cols = numeric_cols.drop('SalePrice')
 object_cols = result.select_dtypes(include='object').columns.tolist()
 #result_encoded=pd.get_dummies(result,columns =object_cols, drop_first =True)
 
@@ -95,3 +97,4 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
