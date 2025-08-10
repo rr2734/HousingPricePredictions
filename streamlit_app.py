@@ -76,55 +76,56 @@ if uploaded_file is not None:
         with open('train_features.json') as f:
             train_features = json.load(f)
 
-test_data= df.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'])
-numeric_cols=df.select_dtypes(include=['int64','float64']).columns.tolist()
-object_cols = df.select_dtypes(include='object').columns.tolist()
-test_encoded=df.get_dummies(result,columns =object_cols, drop_first =True)
-numeric_cols.pop()
-numerical_features = test_encoded[numeric_cols]
-categorical_features = test_encoded.drop(columns=numeric_cols)
-scaler = StandardScaler()
-scaled_numerical_features = pd.DataFrame(scaler.fit_transform(numerical_features), 
+        test_data= df.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'])
+        numeric_cols=df.select_dtypes(include=['int64','float64']).columns.tolist()
+        object_cols = df.select_dtypes(include='object').columns.tolist()
+        test_encoded=df.get_dummies(result,columns =object_cols, drop_first =True)
+        numeric_cols.pop()
+        numerical_features = test_encoded[numeric_cols]
+        categorical_features = test_encoded.drop(columns=numeric_cols)
+        scaler = StandardScaler()
+        scaled_numerical_features = pd.DataFrame(scaler.fit_transform(numerical_features), 
                                          columns=numerical_features.columns, 
                                          index=numerical_features.index)
-test_final = pd.concat([scaled_numerical_features, categorical_features], axis=1)
-test_final1=pd.concat([scaled_numerical_features, categorical_features,result['SalePrice']], axis=1)
-test_final=test_final.dropna(axis=0)
+        test_final = pd.concat([scaled_numerical_features, categorical_features], axis=1)
+        test_final1=pd.concat([scaled_numerical_features, categorical_features,result['SalePrice']], axis=1)
+        test_final=test_final.dropna(axis=0)
 
-for col in train_features:
-    if col not in test_final.columns:
-        test_final[col] = 0
+        for col in train_features:
+            if col not in test_final.columns:
+            test_final[col] = 0
 
-test_final= test_final[train_features]
+        test_final= test_final[train_features]
 
 
 
             
-# --- Make predictions ---
-linear_preds = linear_model.predict(test_final)
-tree_preds = tree_model.predict(test_final)
+        # --- Make predictions ---
+        linear_preds = linear_model.predict(test_final)
+        tree_preds = tree_model.predict(test_final)
 
-# --- Show results ---
-results_df = test_final.copy()
-results_df['Linear_Regression_Pred'] = linear_preds
-results_df['Decision_Tree_Pred'] = tree_preds
+        # --- Show results ---
+        results_df = test_final.copy()
+        results_df['Linear_Regression_Pred'] = linear_preds
+        results_df['Decision_Tree_Pred'] = tree_preds
 
-st.subheader("Predictions")
-st.dataframe(results_df)
+        st.subheader("Predictions")
+        st.dataframe(results_df)
 
-# --- Download option ---
-output = io.BytesIO()
-with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-    results_df.to_excel(writer, index=False)
-st.download_button(
-    label="Download Predictions as Excel",
-    data=output.getvalue(),
-    file_name="predictions.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        # --- Download option ---
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        results_df.to_excel(writer, index=False)
+        st.download_button(
+        label="Download Predictions as Excel",
+        data=output.getvalue(),
+        file_name="predictions.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
