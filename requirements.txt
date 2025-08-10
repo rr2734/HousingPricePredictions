@@ -1,3 +1,4 @@
+openpyxl
 matplotlib
 seaborn
 numpy
@@ -5,6 +6,7 @@ pandas
 statsmodels
 scikit-learn
 streamlit
+
 
 
 
