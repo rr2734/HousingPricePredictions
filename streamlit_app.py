@@ -12,7 +12,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import pickle
-from sklearn.preprocessing import StandardScaler
 from sklearn import tree
 from sklearn.tree import DecisionTreeRegressor 
 
@@ -22,6 +21,8 @@ with open('multilinear_regression_model.pkl', 'rb') as f:
 
 with open('decision_tree_regressor.pkl', 'rb') as f:
     tree_model = pickle.load(f)
+with open('scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
 
 
 train_data = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')  # path to your original training file
@@ -95,7 +96,6 @@ if uploaded_file is not None:
         numeric_cols.pop()
         numerical_features = test_encoded[numeric_cols]
         categorical_features = test_encoded.drop(columns=numeric_cols)
-        scaler = StandardScaler()
         scaled_numerical_features = pd.DataFrame(scaler.fit_transform(numerical_features), 
                                          columns=numerical_features.columns, 
                                          index=numerical_features.index)
@@ -138,6 +138,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
