@@ -93,7 +93,7 @@ if uploaded_file is not None:
         numeric_cols = [col for col in test_data.select_dtypes(include=['int64', 'float64']).columns if col not in ['SalePrice', 'Id']]
         object_cols = test_data.select_dtypes(include='object').columns.tolist()
         test_encoded=pd.get_dummies(test_data,columns =object_cols, drop_first =True)
-        id_col = test_data['Id']
+     
         numerical_features = test_encoded[numeric_cols]
         categorical_features = test_encoded.drop(columns=numeric_cols)
         scaled_numerical_features = pd.DataFrame(scaler.fit_transform(numerical_features), 
@@ -101,6 +101,7 @@ if uploaded_file is not None:
                                          index=numerical_features.index)
         test_final = pd.concat([scaled_numerical_features, categorical_features], axis=1)
         test_final=test_final.dropna(axis=0)
+        id_col = id_col.loc[test_final.index]
 
         for col in train_features:
             if col not in test_final.columns:
@@ -118,14 +119,14 @@ if uploaded_file is not None:
         linear_preds = np.maximum(linear_preds, 0)
 
         tree_preds = tree_model.predict(test_final)
-
+        
         # --- Show results ---
         results_df = test_final.copy()
         results_df['Linear_Regression_Pred'] = linear_preds
         results_df['Decision_Tree_Pred'] = tree_preds
 
         st.subheader("Predictions")
-        st.dataframe(results_df)
+        st.dataframe(id_col,results_df)
 
         # --- Download option ---
         output = io.BytesIO()
@@ -140,6 +141,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
