@@ -10,23 +10,49 @@ with open('multilinear_regression_model.pkl', 'rb') as f:
 with open('decision_tree_regressor.pkl', 'rb') as f:
     tree_model = pickle.load(f)
 
+
+train_data = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')  # path to your original training file
+
+# Identify numeric and categorical columns
+numeric_cols1 = train_data.select_dtypes(include=['int64', 'float64']).columns.tolist()
+categorical_cols1 = train_data.select_dtypes(exclude=['int64', 'float64']).columns.tolist()
+
+# Compute ranges for numeric columns
+numeric_ranges = {col: (train_data[col].min(), train_data[col].max()) for col in numeric_cols1}
+
+# Compute allowed categories for categorical columns
+categorical_values = {col: sorted(train_data[col].dropna().unique()) for col in categorical_cols1}
+
+# ----------------------
+# 3. Display ranges and options
+# ----------------------
+st.title("🏠 House Price Prediction App")
+st.subheader("Upload your test data Excel file")
+
+with st.expander("📋 View required column ranges and categories"):
+    st.write("**Numeric column ranges:**")
+    for col, (min_val, max_val) in numeric_ranges.items():
+        st.write(f"- {col}: {min_val} to {max_val}")
+
+    st.write("**Categorical column allowed values:**")
+    for col, values in categorical_values.items():
+        st.write(f"- {col}: {values}")
+
+
+
+
+
+
+
+
+
+
 result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')
 numeric_cols=result.select_dtypes(include=['int64', 'float64']).columns.tolist()
 object_cols = result.select_dtypes(include='object').columns.tolist()
 #result_encoded=pd.get_dummies(result,columns =object_cols, drop_first =True)
 
-# --- Define required columns ---
-  # example
-categorical_cols = object_cols      # example
 
-# --- UI ---
-st.title("House Price Prediction from Excel")
-
-st.write("""
-Upload an Excel file containing the following columns:
-- **Numeric**: {}
-- **Categorical**: {}
-""".format(", ".join(numeric_cols), ", ".join(categorical_cols)))
 
 uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx"])
 
