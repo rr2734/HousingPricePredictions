@@ -1,13 +1,13 @@
-#import matplotlib.pyplot as plt
-#import seaborn as sns
-#import numpy as np
-#import pandas as pd
-#import os
-#import statsmodels.api as sm
-#from sklearn.model_selection import train_test_split
-#from sklearn.linear_model import LinearRegression
-#from sklearn.metrics import r2_score
-#import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import os
+import statsmodels.api as sm
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+import pickle
 
 result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')
 
@@ -61,4 +61,5 @@ with open('multilinear_regression_model.pkl', 'rb') as f:
 with open('decision_tree_classifier.pkl', 'rb') as f1:
 
     loaded_DT = pickle.load(f1)
+
 
