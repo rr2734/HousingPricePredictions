@@ -51,7 +51,7 @@ with st.expander("📋 View required column ranges and categories"):
 
 result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')
 numeric_cols=result.select_dtypes(include=['int64', 'float64']).columns.tolist()
-numeric_cols = numeric_cols.drop('SalePrice')
+numeric_cols.drop('SalePrice')
 object_cols = result.select_dtypes(include='object').columns.tolist()
 #result_encoded=pd.get_dummies(result,columns =object_cols, drop_first =True)
 
@@ -125,6 +125,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
