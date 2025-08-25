@@ -122,7 +122,7 @@ if uploaded_file is not None:
 
             
         # --- Make predictions ---
-        linear_preds = linear_model.predict(test_final)
+        linear_preds = model_sk.predict(test_final)
         linear_preds = np.exp(linear_preds) - 1
         linear_preds = np.maximum(linear_preds, 0)
 
@@ -169,6 +169,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
