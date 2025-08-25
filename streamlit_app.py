@@ -24,31 +24,35 @@ with open('decision_tree_regressor.pkl', 'rb') as f:
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 with open('adaboost_regressor.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    adaboost_regressor = pickle.load(f)
 with open('bagging_model.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    bagging_model = pickle.load(f)
 with open('gnb.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    gnb = pickle.load(f)
 with open('gradientboostingmodel.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    gradientboostingmodel = pickle.load(f)
 with open('randomforestmodel.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    randomforestmodel = pickle.load(f)
 with open('xgb_model.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    xgb_model = pickle.load(f)
 
 
 train_data = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')  # path to your original training file
 
 # Identify numeric and categorical columns
-numeric_cols1 = train_data.select_dtypes(include=['int64', 'float64']).columns.tolist()
-categorical_cols1 = train_data.select_dtypes(exclude=['int64', 'float64']).columns.tolist()
+numeric_cols1 = ['Fireplaces', 'GarageYrBlt','WoodDeckSF', 
+                                        'OpenPorchSF', '2ndFlrSF','MasVnrArea',
+                                        'BsmtFinSF1', 'LotFrontage', 'OverallQual', 
+                                        'YearBuilt', 'YearRemodAdd', 'TotalBsmtSF', 
+                                        '1stFlrSF', 'GrLivArea', 'FullBath', 
+                                        'TotRmsAbvGrd', 'GarageCars','GarageArea', 'SalePrice']
+
 numeric_cols1.remove('SalePrice')
 
 # Compute ranges for numeric columns
 numeric_ranges = {col: (train_data[col].min(), train_data[col].max()) for col in numeric_cols1}
 
-# Compute allowed categories for categorical columns
-categorical_values = {col: sorted(train_data[col].dropna().unique()) for col in categorical_cols1}
+
 
 # ----------------------
 # 3. Display ranges and options
@@ -61,23 +65,16 @@ with st.expander("📋 View required column ranges and categories"):
     for col, (min_val, max_val) in numeric_ranges.items():
         st.write(f"- {col}: {min_val} to {max_val}")
 
-    st.write("**Categorical column allowed values:**")
-    for col, values in categorical_values.items():
-        st.write(f"- {col}: {values}")
-
-
-
-
-
-
-
-
-
-
+ 
 result = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')
-numeric_cols=result.select_dtypes(include=['int64', 'float64']).columns.tolist()
+numeric_cols=['Fireplaces', 'GarageYrBlt','WoodDeckSF', 
+                                        'OpenPorchSF', '2ndFlrSF','MasVnrArea',
+                                        'BsmtFinSF1', 'LotFrontage', 'OverallQual', 
+                                        'YearBuilt', 'YearRemodAdd', 'TotalBsmtSF', 
+                                        '1stFlrSF', 'GrLivArea', 'FullBath', 
+                                        'TotRmsAbvGrd', 'GarageCars','GarageArea', 'SalePrice']
 numeric_cols.remove('SalePrice')
-object_cols = result.select_dtypes(include='object').columns.tolist()
+
 
 
 
@@ -91,10 +88,10 @@ if uploaded_file is not None:
 
         # --- Validate columns ---
         missing_numeric = [col for col in numeric_cols if col not in df.columns]
-        missing_categorical = [col for col in object_cols if col not in df.columns]
+       
 
-        if missing_numeric or missing_categorical:
-            st.error(f"Missing required columns: {missing_numeric + missing_categorical}")
+        if missing_numeric:
+            st.error(f"Missing required columns: {missing_numeric}")
         else:
             st.success("File loaded successfully!")
 
@@ -103,15 +100,14 @@ if uploaded_file is not None:
 
         id_col = test_data['Id']
         numeric_cols = [col for col in test_data.select_dtypes(include=['int64', 'float64']).columns if col not in ['SalePrice', 'Id']]
-        object_cols = test_data.select_dtypes(include='object').columns.tolist()
-        test_encoded=pd.get_dummies(test_data,columns =object_cols, drop_first =True)
+     
+       
      
         numerical_features = test_encoded[numeric_cols]
-        categorical_features = test_encoded.drop(columns=numeric_cols)
         scaled_numerical_features = pd.DataFrame(scaler.fit_transform(numerical_features), 
                                          columns=numerical_features.columns, 
                                          index=numerical_features.index)
-        test_final = pd.concat([scaled_numerical_features, categorical_features], axis=1)
+        test_final = scaled_numerical_features
         test_final=test_final.dropna(axis=0)
         id_col = id_col.loc[test_final.index]
 
@@ -173,6 +169,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
