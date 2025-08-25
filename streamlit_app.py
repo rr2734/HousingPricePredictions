@@ -23,6 +23,18 @@ with open('decision_tree_regressor.pkl', 'rb') as f:
     tree_model = pickle.load(f)
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
+with open('adaboost_regressor.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+with open('bagging_model.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+with open('gnb.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+with open('gradientboostingmodel.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+with open('randomforestmodel.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+with open('xgb_model.pkl', 'rb') as f:
+    scaler = pickle.load(f)
 
 
 train_data = pd.read_csv('https://raw.githubusercontent.com/rr2734/rashmir/refs/heads/main/train.csv')  # path to your original training file
@@ -89,7 +101,6 @@ if uploaded_file is not None:
         with open('train_features.json') as f:
             train_features = json.load(f)
 
-        test_data= df.drop(columns=['LotFrontage', 'MasVnrArea','GarageYrBlt'], errors = 'ignore')
         id_col = test_data['Id']
         numeric_cols = [col for col in test_data.select_dtypes(include=['int64', 'float64']).columns if col not in ['SalePrice', 'Id']]
         object_cols = test_data.select_dtypes(include='object').columns.tolist()
@@ -119,13 +130,32 @@ if uploaded_file is not None:
         linear_preds = np.exp(linear_preds) - 1
         linear_preds = np.maximum(linear_preds, 0)
 
+        #tree model
         tree_preds = tree_model.predict(test_final)
+
+        #random forest predictions
+        randomforestpred = randomforestmodel.predict(test_final)
+        #Xgboost regressor
+        xgbpredictions = xgb_model.predict(test_final)
+        #Gaussian Naive Bayes Model
+        gnbpredict = gnb.predict(test_final)
+        #Bagging
+        baggingpred = bagging_model.predict(test_final)
+        #Adaboost Regressor
+        adaboost = adaboost_regressor.predict(test_final)
+        gradientboostingmodel = gradientboostingmodel.predict(test_final)
         
         # --- Show results ---
         results_df = test_final.copy()
         results_df['Id'] = id_col
         results_df['Linear_Regression_Pred'] = linear_preds
         results_df['Decision_Tree_Pred'] = tree_preds
+        results_df['Random_Forest_Regressor_Pred'] = randomforestpred
+        results_df['XGBoost_Regressor_Pred'] = xgbpredictions
+        results_df['Gaussian_Naive_Bayes_Model_Pred']=gnbpredict
+        results_df['Bagging_Predictions']=baggingpred
+        results_df['Adaboost_Regressor_Predictions'] = adaboost
+        result_df['Gradient_Boosting_Predictions']=gradientboostingmodel
 
         st.subheader("Predictions")
         st.dataframe(results_df)
@@ -143,6 +173,7 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading file: {e}")
+
 
 
 
